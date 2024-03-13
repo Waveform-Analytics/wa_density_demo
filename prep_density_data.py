@@ -5,10 +5,10 @@ export them to geotiff
 """
 
 import rasterio
-from rasterio.enums import Resampling
 import os
 import glob
 from collections import Counter
+import numpy as np
 
 # First, we'll find all of the data files
 density_folder = "data/density"
@@ -26,6 +26,7 @@ species_name = [filepath.split('/')[2].split('_v')[0] for filepath in density_im
 # Most species have a density file for each month, but not all. In cases where it's not
 # exactly 12 density files, we'll need to do something different.
 count_of_species = Counter(species_name)
+
 
 # Define a function to read in the img file and save it to geotiff
 def img_to_geotiff(input_file_path, output_file_path):
@@ -60,30 +61,37 @@ def img_to_geotiff(input_file_path, output_file_path):
 # in the readme file. For Humpback whales, the authors recommend using the 2009-2019 files.
 # For NARW, they recommend using 2010-2019.
 
-
 species = 'test spp'
 month_number = '04'
 test = f"{species}.month{month_number}.tif"
 
-for density_file, species_name in zip(density_img_files, species_name):
-    if count_of_species.get(species)==12:
-        print()
+for density_file, spp_name in zip(density_img_files, species_name):
 
+    # There are 12 months of density data available
+    if count_of_species.get(spp_name)==12:
+        month_number = density_file.split('month')[1].split('.img')[0]
+        out_file = f"data/density_geotiffs/{spp_name}.month{month_number}.tif"
+        img_to_geotiff(density_file, out_file)
 
+    # There's only an annual average
+    elif count_of_species.get(spp_name)==1:
+        for month_num_val in np.arange(1,13):
+            out_file = f"data/density_geotiffs/{spp_name}.month{month_num_val:02}.tif"
+            img_to_geotiff(density_file, out_file)
 
+    # Humpback whale - special case
+    elif spp_name == 'Humpback_whale':
+        if "2009_2019" in density_file:
+            month_number = density_file.split('month')[1].split('.img')[0]
+            out_file = f"data/density_geotiffs/{spp_name}.month{month_number}.tif"
+            img_to_geotiff(density_file, out_file)
 
-# Open the .img file
-with rasterio.open('path_to_your_file.img') as src:
-    # Read the data
-    data = src.read()
+    # NARW - special case
+    elif spp_name == 'North_Atlantic_right_whale':
+        if "2010-2019" in density_file:
+            month_number = density_file.split('month')[1].split('.img')[0]
+            out_file = f"data/density_geotiffs/{spp_name}.month{month_number}.tif"
+            img_to_geotiff(density_file, out_file)
 
-    # Copy the metadata
-    meta = src.meta.copy()
-
-    # Update the metadata for GeoTIFF
-    meta.update(driver='GTiff')
-
-    # Write to a new GeoTIFF file
-    with rasterio.open('output_filename.tif', 'w', **meta) as dst:
-        dst.write(data)
-
+    else:
+        print('Error! This file was not handled: ' + density_file)
