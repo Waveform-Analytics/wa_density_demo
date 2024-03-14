@@ -43,13 +43,10 @@ def img_to_geotiff(input_file_path, output_file_path):
     with rasterio.open(input_file_path) as src:
         # Read the data
         data = src.read()
-
         # Copy the metadata
         meta = src.meta.copy()
-
         # Update the metadata for GeoTIFF
         meta.update(driver='GTiff')
-
         # Write to a new GeoTIFF file
         with rasterio.open(output_file_path, 'w', **meta) as dst:
             dst.write(data)

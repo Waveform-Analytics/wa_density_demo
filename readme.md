@@ -8,6 +8,7 @@ The data used in this project are from [MGEL Density Models: US East Coast](http
             |-- Atlantic_white_sided_dolphin_v4.1
             |-- etc...
 
+To provide examples of how you can extract relevant statistics, we're using shapefiles from [BOEM's Renewable Energy GIS Data site](https://www.boem.gov/renewable-energy/mapping-and-data/renewable-energy-gis-data)
 
 ## References for Data Sources
 Roberts JJ, Best BD, Mannocci L, Fujioka E, Halpin PN, Palka DL, Garrison LP,
