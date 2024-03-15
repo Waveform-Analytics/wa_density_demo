@@ -15,6 +15,8 @@ from rasterio.plot import show
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
+from shapely.geometry import Polygon
+
 
 
 # --------------------- Lease Area Shapefiles --------------------- #
@@ -61,25 +63,64 @@ with rasterio.open(raster_file_path) as raster_src:
     # Reproject the lease area geodatabase
     gdf_selected_lease_area_reprojected = gdf_selected_lease_area.to_crs(raster_crs)
 
+    # Created a buffered polygon
+    buffered_lease_area = gdf_selected_lease_area_reprojected.geometry.buffer(buffer_size)
+
     # mask the raster using the selected lease area polygon
-    out_image, out_transform = mask(raster_src, gdf_selected_lease_area_reprojected.geometry, crop=True)
+    out_image, _ = mask(raster_src, buffered_lease_area, crop=True)
     raster_data = out_image[0]
+
+    # max the buffer area (for plotting color limit extents)
+    buffered_plot_area = buffered_lease_area.buffer(buffer_size)
+    out_image_for_plotting, _ = mask(raster_src, buffered_plot_area, crop=True)
+    raster_plot_area = out_image_for_plotting[0]
 
     # Compute the mean, excluding no data values (assuming they are np.nan or a defined no data value for your raster)
     no_data_value = raster_src.nodata  # Get no data value from raster metadata if available
     if no_data_value is not None:
+        # Mean value within the buffer area
         mean_value = np.mean(raster_data[raster_data != no_data_value])
+        # For plot color extents
+        min_value = np.min(raster_plot_area[raster_plot_area != no_data_value])
+        max_value = np.max(raster_plot_area[raster_plot_area != no_data_value])
     else:
+        # Mean value within the buffer area
         mean_value = np.mean(raster_data[np.isfinite(raster_data)])
+        # For plot color extents
+        min_value = np.min(raster_plot_area[np.isfinite(raster_plot_area)])
+        max_value = np.max(raster_plot_area[np.isfinite(raster_plot_area)])
 
     # ############################################################################################### #
     # ---------- Quickly plot the raster with the polygon, just to check that it looks reasonable --- #
-    fig, ax = plt.subplots(figsize=(7, 7))
+    fig, ax = plt.subplots(figsize=(7, 7), constrained_layout=True)
 
-    # Plot the raster
-    show(raster_src, ax=ax)
+    # Get the bounds of the buffered polygon for zooming in the plot
+    minx, miny, maxx, maxy = buffered_lease_area.iloc[0].bounds
+    # Add a buffer around the polygon for spacing in the plot
+    plot_buffer_size = maxx - minx
+
+    im = ax.imshow(raster_data, cmap='viridis', vmin=min_value, vmax=max_value,
+                   extent=[minx - plot_buffer_size, maxx + plot_buffer_size,
+                           miny - plot_buffer_size, maxy + plot_buffer_size], origin='upper')
+
+    ax.set_aspect('equal')
+    ax.set_xlabel('Eastings (m)')
+    ax.set_ylabel('Northings (m)')
+    ax.set_title(lease_area_selection + " - " + f"{buffer_size/1000:.0f}-km buffer\n"
+                                                f"Mean density inside buffer: " + f"{mean_value:.2f} animals per 100 km$^2$")
 
     # Overlay the polygon(s) from the GeoDataFrame
     gdf_selected_lease_area_reprojected.plot(ax=ax, facecolor='none', edgecolor='red', linewidth=2)
 
-    plt.show()
+    # Overlay the buffered polygon
+    buffered_lease_area.plot(ax=ax, facecolor='none', edgecolor='red', linewidth=2, linestyle='--')
+
+    # Add colorbar
+    cbar = fig.colorbar(im, ax=ax, fraction=0.036, pad=0.04)
+
+    # Label the colorbar
+    cbar.set_label('Density (animals/100 km$^2$)', rotation=270, labelpad=15)
+
+    buffer_plot_folder = "images/density_buffer_plots"
+
+    plt.savefig(buffer_plot_folder + "/example_buffer_plot.png", bbox_inches='tight')

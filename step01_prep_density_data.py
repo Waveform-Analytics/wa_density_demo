@@ -2,6 +2,7 @@
 In this script, we're preparing the density data for loading into an Observable
 notebook. To simplify things, we're just going to find the density *.img files and
 export them to geotiff
+
 """
 
 import rasterio
