@@ -11,7 +11,6 @@ point for a visualization using any other tool (such as ObservableHQ, Holoviz, P
 
 import rasterio
 from rasterio.mask import mask
-from rasterio.plot import show
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np

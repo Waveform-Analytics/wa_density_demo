@@ -11,12 +11,9 @@ via their Renewable Energy GIS Data site
 """
 import rasterio
 from rasterio.mask import mask
-from rasterio.plot import show
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
-from shapely.geometry import Polygon
-
 
 
 # --------------------- Lease Area Shapefiles --------------------- #
@@ -106,8 +103,10 @@ with rasterio.open(raster_file_path) as raster_src:
     ax.set_aspect('equal')
     ax.set_xlabel('Eastings (m)')
     ax.set_ylabel('Northings (m)')
-    ax.set_title(lease_area_selection + " - " + f"{buffer_size/1000:.0f}-km buffer\n"
-                                                f"Mean density inside buffer: " + f"{mean_value:.2f} animals per 100 km$^2$")
+    ax.set_title(lease_area_selection + " - " +
+                 f"{buffer_size/1000:.0f}-km buffer\n"
+                 f"Mean density inside buffer: " + f"{mean_value:.0e} "
+                 f"animals per 100 km$^2$")
 
     # Overlay the polygon(s) from the GeoDataFrame
     gdf_selected_lease_area_reprojected.plot(ax=ax, facecolor='none', edgecolor='red', linewidth=2)
