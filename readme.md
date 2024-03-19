@@ -1,7 +1,10 @@
 # Exploring Animal Density Data
 
+![map](https://github.com/Waveform-Analytics/wa_density_demo/blob/main/images/map.png)
+
 ***TL;DR*** - If you want to jump right into the code [the notebooks folder](https://github.com/Waveform-Analytics/wa_density_demo/tree/main/notebooks) is a great place to start!
 
+---
 The data used in this project are from [MGEL Density Models: US East Coast](https://seamap.env.duke.edu/models/Duke/EC/). If you'd like to replicate this work, you can either download the full zip file containing all of the data, or you can download individual density files. The data in the data folder are all .gitignore'd because they're large. But the folders are organized as follows:
 
     |--data
