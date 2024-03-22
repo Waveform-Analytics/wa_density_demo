@@ -38,11 +38,11 @@ species_list = ['Atlantic_spotted_dolphin',
                 'Sei_whale',
                 'Short_beaked_common_dolphin',
                 'Sperm_whale']
-density_file_path = 'data/density_geotiffs/'
+density_file_path = 'datasets/density_geotiffs/'
 
 # --------------------- Prep the lease area shapefiles --------------------- #
 # Load the lease area shapefiles
-lease_area_shapefile_path = "data/lease_areas/Wind_Lease_Outlines_11_16_2023.shp"
+lease_area_shapefile_path = "datasets/lease_areas/Wind_Lease_Outlines_11_16_2023.shp"
 
 # Import the shapefile to a geodataframe
 gdf_lease_areas_all = gpd.read_file(lease_area_shapefile_path)
@@ -62,7 +62,7 @@ density = []
 
 # --------------------- Reproject the geodatabase --------------------- #
 # Load just the first raster file and get its CRS info
-raster_src = rasterio.open('data/density_geotiffs/Rissos_dolphin.month06.tif')
+raster_src = rasterio.open('datasets/density_geotiffs/Rissos_dolphin.month06.tif')
 # Get the CRS info from the density file
 raster_crs = raster_src.crs
 # Reproject the lease areas geodatabase
@@ -98,9 +98,9 @@ for file_idx, species_name in enumerate(species_list):
                     out_image, _ = mask(raster_src, buffered_lease_area, crop=True)
                     overlap_area = out_image[0]
 
-                    # Compute the mean, excluding no data values (assuming they are np.nan or a defined no data value for
+                    # Compute the mean, excluding no datasets values (assuming they are np.nan or a defined no datasets value for
                     # your raster)
-                    no_data_value = raster_src.nodata  # Get no data value from raster metadata if available
+                    no_data_value = raster_src.nodata  # Get no datasets value from raster metadata if available
                     if no_data_value is not None:
                         # Mean value within the buffer area
                         mean_value = np.mean(overlap_area[overlap_area != no_data_value])
@@ -117,6 +117,6 @@ for file_idx, species_name in enumerate(species_list):
 df_out = pd.DataFrame(columns=['species', 'lease_area', 'month', 'buffer_size', 'density'],
                       data=np.array([species, lease_area, month, buffer_size, density]).transpose())
 
-df_out.to_csv('data/stats_summary.csv', index=False)
+df_out.to_csv('datasets/stats_summary.csv', index=False)
 
 

@@ -1,5 +1,5 @@
 """ explore-density-and-zonal-stats.py
-Raster data statistics
+Raster datasets statistics
 
 For a given polygon and buffer size, compute the mean density of any cells either fully or partially contained within
 that polygon.
@@ -19,7 +19,7 @@ import numpy as np
 # --------------------- Lease Area Shapefiles --------------------- #
 
 # Load the lease area shapefiles
-lease_area_shapefile_path = "data/lease_areas/Wind_Lease_Outlines_11_16_2023.shp"
+lease_area_shapefile_path = "datasets/lease_areas/Wind_Lease_Outlines_11_16_2023.shp"
 
 # Import the shapefile to a geodataframe
 gdf_lease_areas_all = gpd.read_file(lease_area_shapefile_path)
@@ -40,18 +40,18 @@ buffer_size = 10000
 # --------------------- Density (raster) files --------------------- #
 
 # Raster file selection, hard-coded for testing
-raster_file_path = "data/density_geotiffs/Atlantic_spotted_dolphin.month01.tif"
+raster_file_path = "datasets/density_geotiffs/Atlantic_spotted_dolphin.month01.tif"
 
 
 # --------------------- Zonal Statistics --------------------- #
 
-# The density data and the BOEM polygons are not in the same projection. The density file uses an Albers Equal Area
+# The density datasets and the BOEM polygons are not in the same projection. The density file uses an Albers Equal Area
 # projection while the lease area shapefiles are in geographic coordinates (latitude and longitude). We will stick
 # with Albers and convert the shapefiles.
 
-# Open the raster data file
+# Open the raster datasets file
 with rasterio.open(raster_file_path) as raster_src:
-    # Get the CRS (Coordinate Reference System) of the raster data file
+    # Get the CRS (Coordinate Reference System) of the raster datasets file
     raster_crs = raster_src.crs
 
     # Extract the selected lease area
@@ -72,8 +72,8 @@ with rasterio.open(raster_file_path) as raster_src:
     out_image_for_plotting, _ = mask(raster_src, buffered_plot_area, crop=True)
     raster_plot_area = out_image_for_plotting[0]
 
-    # Compute the mean, excluding no data values (assuming they are np.nan or a defined no data value for your raster)
-    no_data_value = raster_src.nodata  # Get no data value from raster metadata if available
+    # Compute the mean, excluding no datasets values (assuming they are np.nan or a defined no datasets value for your raster)
+    no_data_value = raster_src.nodata  # Get no datasets value from raster metadata if available
     if no_data_value is not None:
         # Mean value within the buffer area
         mean_value = np.mean(raster_data[raster_data != no_data_value])

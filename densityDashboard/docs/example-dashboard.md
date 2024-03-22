@@ -6,7 +6,7 @@ toc: false
 
 # Rocket launches 🚀
 
-<!-- Load and transform the data -->
+<!-- Load and transform the datasets -->
 
 ```js
 const launches = FileAttachment("data/launches.csv").csv({typed: true});
