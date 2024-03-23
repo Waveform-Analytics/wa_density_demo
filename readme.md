@@ -1,5 +1,7 @@
 # Exploring Animal Density Data
 
+ ⭐️ **Check out the dashboard [here](https://waveform-analytics.github.io/wa_density_demo/)!**
+
 ![map](https://github.com/Waveform-Analytics/wa_density_demo/blob/main/images/map.png)
 
 ***TL;DR*** - If you want to jump right into the code [the notebooks folder](https://github.com/Waveform-Analytics/wa_density_demo/tree/main/notebooks) is a great place to start!

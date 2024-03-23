@@ -49,6 +49,7 @@ import {monthly_plot, species_plot} from "./components/plots.js";
 
 </style>
 
+
 <div class="hero">
   <h1>Marine mammal density explorer</h1>
   <h2>Explore variations in monthly species density near offshore wind lease areas</h2>

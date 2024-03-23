@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Overview | Marine Mammal Density Explorer</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,alt,wide.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,alt,wide.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="icon" href="./_file/favicon.8578aaa4.png">
+<script type="module">
+
+import "./_observablehq/client.js";
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Marine Mammal Density Explorer</a></li>
+  </ol>
+  <ol>
+    <details open class="observablehq-section-active">
+      <summary>More info</summary>
+      <ol>
+    <li class="observablehq-link observablehq-link-active"><a href="./overview">Overview</a></li>
+    <li class="observablehq-link"><a href="./sources">Sources</a></li>
+    <li class="observablehq-link"><a href="./waveform">Waveform Analytics</a></li>
+      </ol>
+    </details>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<aside id="observablehq-toc" data-selector="h1:not(:first-of-type), h2:first-child, :not(h1) + h2">
+<nav>
+<div>Contents</div>
+<ol>
+<li class="observablehq-secondary-link"><a href="#the-data">The Data</a></li>
+<li class="observablehq-secondary-link"><a href="#buffers">Buffers</a></li>
+<li class="observablehq-secondary-link"><a href="#what-do-these-datasets-tell-us%3F">What do these datasets tell us?</a></li>
+</ol>
+</nav>
+</aside>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="overview" tabindex="-1"><a class="observablehq-header-anchor" href="#overview">Overview</a></h1>
+<figure>
+    <img src="./_file/assets/map-tight.067973e7.png" alt="Example density map with lease area and buffer" style="width: 600px; border: 3px solid lightgray;">
+    <figcaption>The background map shows predicted animal density for fin whales in July (MGEL/Duke), yellow shows higher densities, blue shows lower. The Revolution Wind lease area is outlined with a solid red line as an example (BOEM GIS data). The coastline dataset is from NOAA (GSHHG). For demo purposes, an example 10-kilometer buffer is shown.</figcaption>
+</figure>
+<p>Offshore wind is becoming increasingly important as we explore environmentally responsible energy sources. However, the installation of wind turbines produces noise which can impact marine animals - they may experience behavioral disturbance, injury, and - in extreme cases - even death. To reduce the risk to marine life, studies are conducted to understand where different animals are at different times and how many individuals are likely to be present. Precautions can then be taken to minimize the likelihood of causing harm.</p>
+<h2 id="the-data" tabindex="-1"><a class="observablehq-header-anchor" href="#the-data">The Data</a></h2>
+<p>For this demo, we're using animal density predictions from the Marine Geospatial Ecology Laboratory (MGEL) at Duke University along with GIS data from the Bureau of Ocean Energy Management. We are essentially trying to understand which species might be near offshore wind lease areas at different times of year - the same data that help regulators and wind operators plan construction schedules.</p>
+<h2 id="buffers" tabindex="-1"><a class="observablehq-header-anchor" href="#buffers">Buffers</a></h2>
+<p>Different buffer sizes are used to represent a area of impact, where animals may hear the sound and have some sort of response or reaction. The particular buffer sizes used in this demo are arbitrary and are not based on any specific modeling - the distance over which sound can have an effect depends on a LOT of different variables which we won't go into here.</p>
+<p>You can think of the buffers as "cookie cutters" - you overlay the buffer on the density data, and take an average of all the values within that buffer area. Larger or smaller buffer areas will naturally result in different density averages.</p>
+<h2 id="what-do-these-datasets-tell-us%3F" tabindex="-1"><a class="observablehq-header-anchor" href="#what-do-these-datasets-tell-us%3F">What do these datasets tell us?</a></h2>
+<p>The density data tell us how different species are distributed in a given area. For this demo, we are focused on density data off the east coast of the US.</p>
+<img src="./_file/assets/density1.32b78743.png" alt="Density image 1" style="width: 300px; border: 2px solid lightgray;">
+<p>There are separate predictions for each month since the predicted densities are based on environmental parameters, some of which vary monthly.
+<img src="./_file/assets/density2.0041d023.png" alt="Density image 2" style="width: 300px; border: 2px solid lightgray;"></p>
+<p>The predicted area where animals may be impacted can change depending on the type of foundation being installed, and the method of installation. This has implications for the number of animals that might be affected.<br>
+<img src="./_file/assets/density3.e80cb73a.png" alt="Density image 3" style="width: 300px; border: 2px solid lightgray;"></p>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./"><span>Marine Mammal Density Explorer</span></a><a rel="next" href="./sources"><span>Sources</span></a></nav>
+<div>© 2024 Waveform Analytics, LLC</div>
+</footer>
+</div>
